@@ -17,3 +17,8 @@ useLocalStorage.propTypes = {
   key: PropTypes.number.isRequired,
   defaultValue: PropTypes.string.isRequired,
 };
+
+// useLocalStorage.propTypes = {
+//   key: PropTypes.number.isRequired,
+//   defaultValue: PropTypes.string.isRequired,
+// };
