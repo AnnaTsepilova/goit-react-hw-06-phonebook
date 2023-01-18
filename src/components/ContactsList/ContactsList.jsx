@@ -1,4 +1,6 @@
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+
 import {
   ContactsListContainer,
   ContactsItem,
@@ -6,11 +8,22 @@ import {
 } from 'components/ContactsList/ContactsList.slyled';
 import { DeleteButton } from 'components/ContactForm/ContactForm.styled';
 
-export default function ContactsList({ contacts, onDelete }) {
+const getVisibleContacts = (contacts, searchQuery) => {
+  return contacts.filter(contact =>
+    contact.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+};
+
+export default function ContactsList({ onDelete }) {
+  const contacts = useSelector(state => state.contacts);
+  const filter = useSelector(state => state.filter);
+
+  const visibleContacts = getVisibleContacts(contacts, filter.filter);
+
   return (
     <ContactsListContainer>
-      {contacts.length ? (
-        contacts.map(contact => {
+      {visibleContacts.length ? (
+        visibleContacts.map(contact => {
           return (
             <ContactsItem key={contact.id}>
               <Text>
@@ -35,11 +48,5 @@ export default function ContactsList({ contacts, onDelete }) {
 }
 
 ContactsList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      name: PropTypes.string,
-      number: PropTypes.string,
-    })
-  ).isRequired,
+  onDelete: PropTypes.func.isRequired,
 };

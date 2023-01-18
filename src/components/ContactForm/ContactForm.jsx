@@ -24,8 +24,9 @@ export default function ContactForm({ onSubmit }) {
 
   const handleSubmit = event => {
     event.preventDefault();
-    onSubmit({ name: name, number: number });
+    onSubmit({ id: nanoid(), name: name, number: number });
     reset();
+    console.log(onSubmit);
   };
 
   const reset = () => {

@@ -1,7 +1,8 @@
 @import-normalize; /* bring in normalize.css styles */
 
 body {
-  background-color: #e7ecf2;
+  /* background-color: #e7ecf2; */
+  background-image: url(/src/services/BingWallpaper.jpg);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;

@@ -1,42 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { nanoid } from 'nanoid';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-import { PhonebookContainer, Title } from './App.styled';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { PhonePageWrapper, PhonebookContainer, Title } from './App.styled';
 
 import Section from 'components/Section/Section';
 import ContactForm from 'components/ContactForm/ContactForm';
 import ContactsList from 'components/ContactsList/ContactsList';
 import Filter from 'components/Filter/Filter';
+import Footer from 'components/Footer/Footer';
 
-import initialContacts from 'components/data/contacts.json';
-import useLocalStorage from 'hooks/useLocalStorage';
+import { addContact, deleteContact } from 'redux/contactsSlice';
+import { setFilterContact } from 'redux/filterSlice';
 
 export default function App() {
-  const [contacts, setContacts] = useLocalStorage('contacts', initialContacts);
-  const [filter, setFilter] = useState('');
+  const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts);
 
-  const contactDeleteHandler = contactId => {
-    setContacts(contacts.filter(contact => contact.id !== contactId));
-    Notify.success('Contact is deleted', {
-      fontSize: '16px',
-      width: '350px',
-    });
-  };
-
-  const formSubmitHandler = data => {
-    let contact = { id: nanoid(), name: data.name, number: data.number };
-
+  const addContactApp = payload => {
     let isContactName = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(data.name.toLowerCase())
+      contact.name.toLowerCase().includes(payload.name.toLowerCase())
     );
     let isContactNumber = contacts.filter(contact =>
-      contact.number.toLowerCase().includes(data.number.toLowerCase())
+      contact.number.toLowerCase().includes(payload.number.toLowerCase())
     );
 
     if (isContactName.length) {
-      Notify.warning(`Name ${data.name} is already in your contacts`, {
+      Notify.warning(`Name ${payload.name} is already in your contacts`, {
         background: '#eebf31',
         fontSize: '16px',
         width: '350px',
@@ -45,24 +37,23 @@ export default function App() {
     }
 
     if (isContactNumber.length) {
-      Notify.warning(`Number ${data.number} is already in your contacts`, {
+      Notify.warning(`Number ${payload.number} is already in your contacts`, {
         background: '#eebf31',
         fontSize: '16px',
         width: '350px',
       });
       return;
     }
-    setContacts(prevState => [...prevState, contact]);
+
+    dispatch(addContact(payload));
   };
 
-  const handleFilter = value => {
-    setFilter(value);
-  };
-
-  const getFilteredContacts = () => {
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
-    );
+  const contactDeleteHandler = contactId => {
+    Notify.success('Contact is deleted', {
+      fontSize: '16px',
+      width: '350px',
+    });
+    dispatch(deleteContact(contactId));
   };
 
   useEffect(() => {
@@ -70,16 +61,20 @@ export default function App() {
   }, [contacts]);
 
   return (
-    <PhonebookContainer>
-      <Title>Phonebook</Title>
-      <ContactForm onSubmit={formSubmitHandler} />
-      <Section title="Contacts"></Section>
-      <Filter filterByName={handleFilter} />
-      <ContactsList
-        contacts={getFilteredContacts()}
-        onDelete={contactDeleteHandler}
-      />
-    </PhonebookContainer>
+    <>
+      <PhonePageWrapper>
+        <PhonebookContainer>
+          <Title>Phonebook</Title>
+          <ContactForm onSubmit={payload => addContactApp(payload)} />
+          <Section title="Contacts"></Section>
+          <Filter
+            filterByName={payload => dispatch(setFilterContact(payload))}
+          />
+          <ContactsList onDelete={payload => contactDeleteHandler(payload)} />
+        </PhonebookContainer>
+      </PhonePageWrapper>
+      <Footer />
+    </>
   );
 }
 

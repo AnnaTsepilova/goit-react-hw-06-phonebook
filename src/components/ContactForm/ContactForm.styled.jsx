@@ -1,14 +1,10 @@
 import styled from 'styled-components';
 
 export const FormContainer = styled.form`
-  padding-top: ${props => props.theme.space[5]}px;
-  padding-bottom: ${props => props.theme.space[5]}px;
-  padding-left: ${props => props.theme.space[5]}px;
-  padding-right: ${props => props.theme.space[5]}px;
+  padding: 0 20px 20px 20px;
 
   background-color: ${props => props.theme.colors.background};
-  box-shadow: ${props => props.theme.shadows.boxShadow};
-  border-radius: ${props => props.theme.radii.normal};
+  border-bottom: 7px solid #2196f3;
 `;
 
 export const Label = styled.label`
@@ -19,8 +15,7 @@ export const Label = styled.label`
 
 export const ContactInput = styled.input`
   display: block;
-  margin-top: ${props => props.theme.space[5]}px;
-  margin-bottom: ${props => props.theme.space[5]}px;
+  margin-bottom: 28px;
   padding: ${props => props.theme.space[4]}px;
   font-size: 20px;
 
