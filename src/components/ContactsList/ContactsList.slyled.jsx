@@ -2,9 +2,10 @@ import styled from 'styled-components';
 
 export const ContactsListContainer = styled.ul`
   list-style-type: disc;
-  padding-bottom: ${props => props.theme.space[6]}px;
+  padding-bottom: 2px;
   padding-left: 20px;
   padding-right: 20px;
+  min-height: 180px;
 `;
 
 export const ContactsItem = styled.li`

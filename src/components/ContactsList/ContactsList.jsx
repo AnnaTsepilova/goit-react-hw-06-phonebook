@@ -15,7 +15,7 @@ const getVisibleContacts = (contacts, searchQuery) => {
 };
 
 export default function ContactsList({ onDelete }) {
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(state => state.contacts.contacts);
   const filter = useSelector(state => state.filter);
 
   const visibleContacts = getVisibleContacts(contacts, filter.filter);

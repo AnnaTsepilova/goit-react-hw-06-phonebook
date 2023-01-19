@@ -17,7 +17,7 @@ import { setFilterContact } from 'redux/filterSlice';
 
 export default function App() {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(state => state.contacts.contacts);
 
   const addContactApp = payload => {
     let isContactName = contacts.filter(contact =>
